@@ -1,5 +1,5 @@
 import { Close, ShoppingCart } from "@mui/icons-material";
-import { useTheme, IconButton, Box, Badge, Typography, Divider, useMediaQuery } from "@mui/material";
+import { useTheme, IconButton, Box, Badge, Typography, Divider, useMediaQuery, Button } from "@mui/material";
 import { Fragment, useState } from "react";
 import { useAppSelector } from "../app/hooks";
 import CartItem from "./CartItem";
@@ -7,7 +7,7 @@ import CartItem from "./CartItem";
 const Cart = () => {
   const [isOpened, setIsOpened] = useState(false);
   const { palette } = useTheme();
-  const { list, count } = useAppSelector(state => state.cart);
+  const { list, count, summary } = useAppSelector(state => state.cart);
   const isNonMobileScreen = useMediaQuery("(min-width:500px)");
 
   return (
@@ -35,6 +35,8 @@ const Cart = () => {
           right="0"
           bottom="0"
           zIndex="20"
+          display="flex"
+          flexDirection="column"
           width={isNonMobileScreen ? "430px" : "100%"}
           bgcolor={palette.background.default}
           boxShadow="-7px 4px 8px 0px rgba(34, 60, 80, 0.2)"
@@ -48,15 +50,17 @@ const Cart = () => {
           }}
         >
           <Box display="flex" justifyContent="space-between" alignItems="center" p="24px">
-            <Typography variant="h4" color={palette.text.primary}>
+            <Typography variant="h4" color={palette.text.primary} fontWeight="500">
               Cart
             </Typography>
             <IconButton onClick={() => setIsOpened(false)}>
               <Close sx={{ fontSize: "25px", color: palette.text.primary }} />
             </IconButton>
           </Box>
+
           <Divider />
-          <Box p="24px">
+
+          <Box flexGrow="1" p="24px" sx={{ overflowY: "auto" }}>
             {list.map((item, i) => (
               <Fragment key={item.id}>
                 <CartItem item={item} />
@@ -65,6 +69,37 @@ const Cart = () => {
                 )}
               </Fragment>
             ))}
+          </Box>
+
+          <Divider />
+
+          <Box mb="5px" p="24px">
+            <Box display="flex" justifyContent="space-between">
+              <Typography fontWeight="700">
+                Subtotal
+              </Typography>
+              <Typography>
+              {`$${summary.toLocaleString("en-US")}`}
+              </Typography>
+            </Box>
+            <Typography mb="15px">
+              Shipping and taxes calculated at checkout.
+            </Typography>
+            <Button
+              fullWidth
+              sx={{
+                pt: "8px",
+                pb: "8px",
+                bgcolor: "rgb(67 56 202)",
+                fontWeight: 500,
+                color: "#FFF",
+                "&:hover": {
+                  color: "rgb(67 56 202)",
+                }
+              }}
+            >
+              Checkout
+            </Button>
           </Box>
         </Box>
     </Box>

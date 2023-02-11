@@ -7,11 +7,13 @@ export interface ICartProduct extends IProduct {
 export interface CartState {
   list: ICartProduct[];
   count: number;
+  summary: number,
 };
 
 const initialState: CartState = {
   list: [],
   count: 0,
+  summary: 0,
 };
 
 export const cartSlice = createSlice({
@@ -23,13 +25,16 @@ export const cartSlice = createSlice({
         const newItem: ICartProduct = { ...action.payload, count: 1 };
         state.list = [newItem];
         state.count++;
+        state.summary += newItem.price;
       }
       const item = state.list?.find(item => item.id === action.payload.id);
       if (item) {
         item.count++;
+        state.summary += item.price;
       } else {
         const newItem: ICartProduct = { ...action.payload, count: 1 };
         state.list.push(newItem);
+        state.summary += newItem.price;
       }
       state.count++;
     },
@@ -41,6 +46,7 @@ export const cartSlice = createSlice({
       if (item) {
         item.count--;
         state.count--;
+        state.summary -= item.price;
         if (item.count <= 0) {
           state.list.splice(state.list.indexOf(item), 1);
         }

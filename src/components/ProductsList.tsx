@@ -2,22 +2,23 @@ import { Box, Typography, useMediaQuery } from "@mui/material";
 import { useEffect } from "react"
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { fetchProducts } from "../features/products/productsSlice";
-import Container from "./Container";
+import ProductSkeleton from "../skeleton/ProductSkeleton";
 import Product from "./Product";
 
 const ProductsList = () => {
   const dispatch = useAppDispatch();
-  const products = useAppSelector((state) => state.products.list);
+  const { list, loading } = useAppSelector((state) => state.products);
   const isDesktopScreen = useMediaQuery("(min-width:1200px)");
   const isNonTabletScreen = useMediaQuery("(min-width:1000px)");
   const isNonMobileScreen = useMediaQuery("(min-width:600px)");
 
   useEffect(() => {
-    if (!products) dispatch(fetchProducts());
+    console.log(list);
+    if (!list || list.length === 0) dispatch(fetchProducts());
   }, []);
 
   return (
-    <Container>
+    <>
       <Typography variant={isNonMobileScreen ? "h2" : "h3"} fontWeight="700" mb="30px">
         Trending products
       </Typography>
@@ -31,11 +32,26 @@ const ProductsList = () => {
         // gridAutoRows="300px"
         gap={isDesktopScreen ? "30px" : "15px"}
       >
-        {products && products.map(item => (
-          <Product key={item.id} item={item} />
-        ))}
+        {
+          loading
+            ? <>
+              <ProductSkeleton />
+              <ProductSkeleton />
+              <ProductSkeleton />
+              <ProductSkeleton />
+              <ProductSkeleton />
+              <ProductSkeleton />
+              <ProductSkeleton />
+              <ProductSkeleton />
+              <ProductSkeleton />
+              <ProductSkeleton />
+              <ProductSkeleton />
+              <ProductSkeleton />
+            </>
+            : list.map(item => (<Product key={item.id} item={item} />))
+        }
       </Box>
-    </Container>
+    </>
   )
 }
 

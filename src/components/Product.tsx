@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { Box, Button, Typography, useMediaQuery, useTheme } from "@mui/material";
 import { Star } from "@mui/icons-material";
 import { useAppDispatch } from "../app/hooks";
@@ -21,17 +22,23 @@ const Product = ({ item }: IProductProps) => {
 
   const { palette } = useTheme();
   const dispatch = useAppDispatch();
+
+  const navigate = useNavigate();
   const isDesktopScreen = useMediaQuery("(min-width:1200px)");
 
   return (
-    <Box gridColumn="1 span" sx={{
-      cursor: "pointer",
-      "&:hover > div:first-of-type": {
-        opacity: 0.5,
-      }
-    }}>
+    <Box
+      gridColumn="1 span"
+      onClick={() => navigate(`/product/${id}`)}
+      sx={{
+        cursor: "pointer",
+        "&:hover > div:first-of-type": {
+          opacity: 0.5,
+        }
+      }}
+    >
       <Box
-      position="relative"
+        position="relative"
         display="flex"
         alignItems="center"
         justifyContent="center"
@@ -66,10 +73,24 @@ const Product = ({ item }: IProductProps) => {
         <Typography mt="5px">
           {`$${price.toLocaleString("en-US")}`}
         </Typography>
+        <Button
+          onClick={(e) => {
+            e.stopPropagation();
+            dispatch(add(item));
+          }}
+          sx={{
+            mt: "5px",
+            bgcolor: "rgb(67 56 202)",
+            fontWeight: 500,
+            color: "#FFF",
+            "&:hover": {
+              color: "rgb(67 56 202)",
+            }
+          }}
+        >
+          Add to cart
+        </Button>
       </Box>
-      <Button onClick={() => dispatch(add(item))} sx={{ fontWeight: 500 }}>
-        Add to cart
-      </Button>
     </Box>
   )
 }

@@ -1,8 +1,9 @@
 import { Close, ShoppingCart } from "@mui/icons-material";
-import { useTheme, IconButton, Box, Badge, Typography, Divider, useMediaQuery, Button } from "@mui/material";
+import { useTheme, IconButton, Box, Badge, Typography, Divider, useMediaQuery } from "@mui/material";
 import { Fragment, useState } from "react";
 import { useAppSelector } from "../app/hooks";
 import CartItem from "./CartItem";
+import PrimaryButton from "./PrimaryButton";
 
 const Cart = () => {
   const [isOpened, setIsOpened] = useState(false);
@@ -85,21 +86,15 @@ const Cart = () => {
             <Typography mb="15px">
               Shipping and taxes calculated at checkout.
             </Typography>
-            <Button
+            <PrimaryButton
               fullWidth
               sx={{
                 pt: "8px",
                 pb: "8px",
-                bgcolor: "rgb(67 56 202)",
-                fontWeight: 500,
-                color: "#FFF",
-                "&:hover": {
-                  color: "rgb(67 56 202)",
-                }
               }}
             >
               Checkout
-            </Button>
+            </PrimaryButton>
           </Box>
         </Box>
     </Box>

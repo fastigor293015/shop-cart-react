@@ -1,9 +1,10 @@
 import { useNavigate } from "react-router-dom";
-import { Box, Button, Typography, useMediaQuery, useTheme } from "@mui/material";
+import { Box, Typography, useMediaQuery, useTheme } from "@mui/material";
 import { Star } from "@mui/icons-material";
 import { useAppDispatch } from "../app/hooks";
 import { add } from "../features/cart/cartSlice";
 import { IProduct } from "../features/products/productsSlice";
+import PrimaryButton from "./PrimaryButton";
 
 interface IProductProps {
   item: IProduct;
@@ -73,23 +74,18 @@ const Product = ({ item }: IProductProps) => {
         <Typography mt="5px">
           {`$${price.toLocaleString("en-US")}`}
         </Typography>
-        <Button
+        <PrimaryButton
           onClick={(e) => {
             e.stopPropagation();
             dispatch(add(item));
           }}
           sx={{
+            p: "8px 12px",
             mt: "5px",
-            bgcolor: "rgb(67 56 202)",
-            fontWeight: 500,
-            color: "#FFF",
-            "&:hover": {
-              color: "rgb(67 56 202)",
-            }
           }}
         >
           Add to cart
-        </Button>
+        </PrimaryButton>
       </Box>
     </Box>
   )

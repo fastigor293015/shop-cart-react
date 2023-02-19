@@ -1,6 +1,6 @@
-import { ArrowBack, Add, Remove } from "@mui/icons-material";
+import { ArrowBack, Add } from "@mui/icons-material";
 import { Box, Accordion, AccordionSummary, AccordionDetails, Rating, Typography, useMediaQuery, useTheme, Divider } from "@mui/material";
-import { useState, useEffect, Fragment } from "react";
+import { useState, Fragment } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { add } from "../features/cart/cartSlice";
@@ -18,13 +18,13 @@ const defaultColors = [
   "black",
   "white",
   "gray",
-]
+];
 const defaultSummaryValues = [
   "Features",
   "Care",
   "Shipping",
   "Returns",
-]
+];
 
 const ProductDetails = () => {
   const [thumbnail, setThumbnail] = useState(0);
@@ -35,16 +35,14 @@ const ProductDetails = () => {
   const { productId } = useParams();
   const navigate = useNavigate();
 
-  const list = useAppSelector(state => state.products.list);
+  const productsList = useAppSelector(state => state.products.list);
+  const cartList = useAppSelector(state => state.cart.list);
   const dispatch = useAppDispatch();
-  const product = list.find(item => item.id.toString() === productId);
+  const product = productsList.find(item => item.id.toString() === productId);
+  const productAmount = cartList.find(item => item.id.toString() === productId)?.count || "";
 
   const isNonTabletScreen = useMediaQuery("(min-width:900px)");
   const isNonMobileScreen = useMediaQuery("(min-width:600px)");
-
-  useEffect(() => {
-    console.log(product);
-  }, []);
 
   return (
     <Box>
@@ -133,8 +131,9 @@ const ProductDetails = () => {
               Color
             </Typography>
             <Box display="flex" gap="15px">
-              {defaultColors.map(item => (
+              {defaultColors.map((item, i) => (
                 <Box
+                key={`${i}`}
                   position="relative"
                   width="30px"
                   height="30px"
@@ -161,12 +160,14 @@ const ProductDetails = () => {
           <PrimaryButton
             onClick={() => product ? dispatch(add(product)) : undefined}
             sx={{
+              gap: "5px",
               mb: "30px",
               pl: "50px",
               pr: "50px",
             }}
           >
-            Add to cart
+            <Add />
+            Add to cart{productAmount === "" ? "" : ` (${productAmount})`}
           </PrimaryButton>
 
           {defaultSummaryValues.map((item, i) => (
@@ -189,8 +190,8 @@ const ProductDetails = () => {
               >
                 <AccordionSummary
                   expandIcon={
-                    <Box className="accordion-icon" position="relative" width="13px" height="2px" borderRadius="2px" bgcolor="currentColor" sx={{ opacity: .5 }}>
-                      <Box position="absolute" bgcolor="inherit" sx={{ inset: 0, transform: "rotate(-90deg)", transition: "transform .2s ease-in-out" }}></Box>
+                    <Box className="accordion-icon" position="relative" width="13px" height="2px" borderRadius="2px" bgcolor={palette.text.primary} sx={{ opacity: .5 }}>
+                      <Box position="absolute" borderRadius="2px" bgcolor={palette.text.primary} sx={{ inset: 0, transform: "rotate(-90deg)", transition: "transform .2s ease-in-out" }}></Box>
                     </Box>
                   }
                   sx={{
@@ -199,10 +200,10 @@ const ProductDetails = () => {
                       p: "0 5px",
                       fontWeight: "500",
                     },
-                    "& .css-yw020d-MuiAccordionSummary-expandIconWrapper.Mui-expanded, .css-19hn6xk-MuiAccordionSummary-expandIconWrapper.Mui-expanded": {
+                    "& .MuiAccordionSummary-expandIconWrapper.Mui-expanded, .MuiAccordionSummary-expandIconWrapper.Mui-expanded": {
                       transform: "none",
                     },
-                    "& .css-yw020d-MuiAccordionSummary-expandIconWrapper.Mui-expanded .accordion-icon > div, .css-19hn6xk-MuiAccordionSummary-expandIconWrapper.Mui-expanded .accordion-icon > div": {
+                    "& .MuiAccordionSummary-expandIconWrapper.Mui-expanded .accordion-icon > div, .MuiAccordionSummary-expandIconWrapper.Mui-expanded .accordion-icon > div": {
                       transform: "none",
                     }
                   }}

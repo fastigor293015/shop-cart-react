@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { Box, Typography, useMediaQuery, useTheme } from "@mui/material";
-import { Star } from "@mui/icons-material";
+import { Add, Star } from "@mui/icons-material";
 import { useAppDispatch } from "../app/hooks";
 import { add } from "../features/cart/cartSlice";
 import { IProduct } from "../features/products/productsSlice";
@@ -80,10 +80,12 @@ const Product = ({ item }: IProductProps) => {
             dispatch(add(item));
           }}
           sx={{
+            gap: "5px",
             p: "8px 12px",
             mt: "5px",
           }}
         >
+          <Add />
           Add to cart
         </PrimaryButton>
       </Box>

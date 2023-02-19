@@ -64,7 +64,7 @@ const Cart = () => {
           <Box flexGrow="1" p="24px" sx={{ overflowY: "auto" }}>
             {list.map((item, i) => (
               <Fragment key={item.id}>
-                <CartItem item={item} />
+                <CartItem item={item} setIsCartOpened={setIsOpened} />
                 {i < (list.length - 1) && (
                   <Divider sx={{ m: "20px 0" }} />
                 )}

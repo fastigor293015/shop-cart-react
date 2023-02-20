@@ -4,29 +4,91 @@ import { Fragment, useState } from "react";
 import { useAppSelector } from "../app/hooks";
 import CartItem from "./CartItem";
 import PrimaryButton from "./PrimaryButton";
+import { motion } from "framer-motion";
+import SlidingPanel from "./SlidingPanel";
+import Modal from "./Modal";
 
 const Cart = () => {
-  const [isOpened, setIsOpened] = useState(false);
+  const [isCartOpened, setIsCartOpened] = useState(false);
+  const [isFormOpened, setIsFormOpened] = useState(false);
   const { palette } = useTheme();
   const { list, count, summary } = useAppSelector(state => state.cart);
   const isNonMobileScreen = useMediaQuery("(min-width:500px)");
 
   return (
     <Box>
-      <IconButton onClick={() => setIsOpened(!isOpened)}>
+      <IconButton onClick={() => setIsCartOpened(!isCartOpened)}>
         <Badge badgeContent={count} color="primary">
           <ShoppingCart sx={{ fontSize: "25px", color: palette.text.primary }} />
         </Badge>
       </IconButton>
-      {isOpened && (<Box
+      {isCartOpened && <SlidingPanel setIsOpened={setIsCartOpened}>
+        <Box display="flex" flexDirection="column" height="100%">
+          <Box display="flex" justifyContent="space-between" alignItems="center" p="24px">
+            <Typography variant="h4" color={palette.text.primary} fontWeight="500">
+              Cart
+            </Typography>
+            <IconButton onClick={() => setIsCartOpened(false)}>
+              <Close sx={{ fontSize: "25px", color: palette.text.primary }} />
+            </IconButton>
+          </Box>
+
+          <Divider />
+
+          <Box flexGrow="1" p="24px" sx={{ overflowY: "auto" }}>
+            {list.map((item, i) => (
+              <Fragment key={item.id}>
+                <CartItem item={item} setIsCartOpened={setIsCartOpened} />
+                {i < (list.length - 1) && (
+                  <Divider sx={{ m: "20px 0" }} />
+                )}
+              </Fragment>
+            ))}
+          </Box>
+
+          <Divider />
+
+          <Box mb="5px" p="24px">
+            <Box display="flex" justifyContent="space-between">
+              <Typography fontWeight="700">
+                Subtotal
+              </Typography>
+              <Typography>
+              {`$${summary.toLocaleString("en-US")}`}
+              </Typography>
+            </Box>
+            <Typography mb="15px">
+              Shipping and taxes calculated at checkout.
+            </Typography>
+            <PrimaryButton
+              fullWidth
+              disabled={parseInt(summary.toLocaleString("en-US")) <= 0 ? true : undefined}
+              onClick={() => setIsFormOpened(true)}
+              sx={{
+                pt: "8px",
+                pb: "8px",
+              }}
+            >
+              Checkout
+            </PrimaryButton>
+          </Box>
+        </Box>
+      </SlidingPanel>}
+
+      {isFormOpened && <Modal setIsOpened={setIsFormOpened}>
+        <Box>
+          Я - модалка туруруру
+        </Box>
+      </Modal>}
+      {/* {isCartOpened && (<Box
         position="fixed"
         zIndex="20"
-        onClick={() => setIsOpened(false)}
+        onClick={() => setIsCartOpened(false)}
         sx={{
           inset: 0,
           bgcolor: palette.text.primary,
-          opacity: isOpened ? 0.8 : 0,
-          pointerEvents: isOpened ? "all" : "none",
+          opacity: isCartOpened ? 0.8 : 0,
+          pointerEvents: isCartOpened ? "all" : "none",
           transition: "opacity .3s ease-in-out",
         }}
       />)}
@@ -43,8 +105,8 @@ const Cart = () => {
           boxShadow="-7px 4px 8px 0px rgba(34, 60, 80, 0.2)"
           sx={{
             overflowY: "auto",
-            opacity: isOpened ? 1 : 0,
-            transform: `translateX(${isOpened ? 0 : 100}%)`,
+            opacity: isCartOpened ? 1 : 0,
+            transform: `translateX(${isCartOpened ? 0 : 100}%)`,
             transitionProperty: "transform, opacity",
             transitionDuration: ".3s",
             transitionTimingFunction: "ease-in-out",
@@ -54,7 +116,7 @@ const Cart = () => {
             <Typography variant="h4" color={palette.text.primary} fontWeight="500">
               Cart
             </Typography>
-            <IconButton onClick={() => setIsOpened(false)}>
+            <IconButton onClick={() => setIsCartOpened(false)}>
               <Close sx={{ fontSize: "25px", color: palette.text.primary }} />
             </IconButton>
           </Box>
@@ -64,7 +126,7 @@ const Cart = () => {
           <Box flexGrow="1" p="24px" sx={{ overflowY: "auto" }}>
             {list.map((item, i) => (
               <Fragment key={item.id}>
-                <CartItem item={item} setIsCartOpened={setIsOpened} />
+                <CartItem item={item} setIsCartOpened={setIsCartOpened} />
                 {i < (list.length - 1) && (
                   <Divider sx={{ m: "20px 0" }} />
                 )}
@@ -96,7 +158,7 @@ const Cart = () => {
               Checkout
             </PrimaryButton>
           </Box>
-        </Box>
+        </Box> */}
     </Box>
   )
 }

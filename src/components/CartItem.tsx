@@ -4,6 +4,7 @@ import { Add, Remove } from "@mui/icons-material";
 import { add, ICartProduct, remove } from "../features/cart/cartSlice";
 import { useAppDispatch } from "../app/hooks";
 import { useLocation, useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 
 interface ICartItemProps {
   item: ICartProduct;
@@ -30,7 +31,16 @@ const CartItem = ({ item, setIsCartOpened }: ICartItemProps) => {
   const dispatch = useAppDispatch();
 
   return (
-    <Box display="flex" alignItems="center" gap="20px">
+    <Box
+      component={motion.div}
+      display="flex"
+      alignItems="center"
+      gap="20px"
+      animate={{ opacity: 1, scale: 1 }}
+      initial={{ opacity: 0, scale: .5 }}
+      exit={{ opacity: 0, scale: .5 }}
+      transition={{ delay: .2 }}
+    >
       <Box
         display="flex"
         alignItems="center"

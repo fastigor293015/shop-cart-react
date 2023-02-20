@@ -29,7 +29,6 @@ const Product = ({ item }: IProductProps) => {
 
   return (
     <Box
-      gridColumn="1 span"
       onClick={() => navigate(`/product/${id}`)}
       sx={{
         cursor: "pointer",

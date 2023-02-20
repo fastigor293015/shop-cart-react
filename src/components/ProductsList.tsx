@@ -31,6 +31,11 @@ const ProductsList = () => {
           : "repeat(1, 1fr)"}
         // gridAutoRows="300px"
         gap={isDesktopScreen ? "30px" : "15px"}
+        sx={{
+          "& > *": {
+            gridColumn: "1 span",
+          },
+        }}
       >
         {
           loading

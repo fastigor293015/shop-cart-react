@@ -28,11 +28,13 @@ type FormData = yup.InferType<typeof paymentSchema>;
 
 
 const PaymentForm = ({ setIsOpened }: IPaymentFormProps) => {
-  const [isChecked, setIsChecked] = useState(true);
-  const [cardType, setCardType] = useState<string | null>(null);
-
   const { name, cardNumber, expirationDate, cvv } = useAppSelector(state => state.paymentData);
   const dispatch = useAppDispatch();
+
+  const initialCardType = valid.number(cardNumber).card?.type;
+
+  const [isChecked, setIsChecked] = useState(true);
+  const [cardType, setCardType] = useState<string | null>(initialCardType ? initialCardType : null);
 
   const { control, handleSubmit, formState: { errors } } = useForm<FormData>({
     resolver: yupResolver(paymentSchema),

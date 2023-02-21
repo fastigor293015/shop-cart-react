@@ -4,11 +4,6 @@ import { useState, Fragment } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { add } from "../features/cart/cartSlice";
-
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
-import 'swiper/css/scrollbar';
 import PrimaryButton from "./PrimaryButton";
 
 const thumbnailsList = [

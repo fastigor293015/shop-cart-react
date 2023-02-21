@@ -13,20 +13,27 @@
   "dependencies": {
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
+    "@hookform/resolvers": "^2.9.11",
     "@mui/icons-material": "^5.11.0",
     "@mui/material": "^5.11.7",
     "@reduxjs/toolkit": "^1.9.2",
+    "card-validator": "^8.1.1",
+    "formik": "^2.2.9",
     "framer-motion": "^9.0.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-hook-form": "^7.43.1",
+    "react-input-mask": "^2.0.4",
     "react-redux": "^8.0.5",
     "react-router-dom": "^6.8.1",
     "redux-persist": "^6.0.0",
-    "swiper": "^9.0.4"
+    "sweetalert2": "^11.7.2",
+    "yup": "^1.0.0"
   },
   "devDependencies": {
     "@types/react": "^18.0.27",
     "@types/react-dom": "^18.0.10",
+    "@types/react-input-mask": "^3.0.2",
     "@vitejs/plugin-react-swc": "^3.0.0",
     "typescript": "^4.9.3",
     "vite": "^4.1.0"

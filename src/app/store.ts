@@ -3,6 +3,7 @@ import { persistStore, persistReducer, FLUSH, PAUSE, PERSIST, PURGE, REGISTER, R
 import storage from 'redux-persist/lib/storage';
 import cartSlice from "../features/cart/cartSlice";
 import counterSlice from "../features/counter/counterSlice";
+import paymentDataSlice from "../features/paymentData/paymentDataSlice";
 import productsSlice from "../features/products/productsSlice";
 import themeSlice from "../features/theme/themeSlice";
 
@@ -11,6 +12,7 @@ const rootReducer = combineReducers({
   counter: counterSlice,
   products: productsSlice,
   cart: cartSlice,
+  paymentData: paymentDataSlice,
 })
 
 const persistConfig = { key: "root", storage, version: 1 };

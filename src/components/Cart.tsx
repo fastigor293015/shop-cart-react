@@ -1,5 +1,5 @@
 import { Close, ShoppingCart } from "@mui/icons-material";
-import { useTheme, IconButton, Box, Badge, Typography, Divider, useMediaQuery, TextField, FormControlLabel, Checkbox } from "@mui/material";
+import { useTheme, IconButton, Box, Badge, Typography, Divider, useMediaQuery } from "@mui/material";
 import { Fragment, useState } from "react";
 import { useAppSelector } from "../app/hooks";
 import CartItem from "./CartItem";
@@ -8,7 +8,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import SlidingPanel from "./SlidingPanel";
 import Modal from "./Modal";
 
-import headphonesimg from "../assets/headphones.png";
+import headphonesImg from "../assets/headphones.png";
+import PaymentForm from "./PaymentForm";
 
 const Cart = () => {
   const [isCartOpened, setIsCartOpened] = useState(false);
@@ -79,7 +80,10 @@ const Cart = () => {
       </SlidingPanel>
 
       <Modal isOpened={isFormOpened} setIsOpened={setIsFormOpened}>
-        <Box display="flex">
+        <Box position="relative" display="flex">
+          <IconButton sx={{ position: "absolute", top: "15px", right: "15px", }} onClick={() => setIsFormOpened(false)}>
+            <Close />
+          </IconButton>
           <Box
             position="relative"
             width="270px"
@@ -97,24 +101,10 @@ const Cart = () => {
               }
             }}
           >
-            <img src={headphonesimg} style={{ maxWidth: "85%", transform: "translateX(10px)" }} />
+            <img src={headphonesImg} style={{ maxWidth: "85%", transform: "translateX(10px)" }} />
           </Box>
-          <form style={{ padding: "40px 30px" }}>
-            <Typography variant="h3" fontWeight="500" mb="15px">
-              Your payment details
-            </Typography>
-            <TextField fullWidth label="NAME" variant="standard" sx={{ mb: "10px" }} />
-            <TextField fullWidth label="CARD NUMBER" variant="standard" sx={{ mb: "10px" }} />
-            <Box display="flex" gap="15px" sx={{ mb: "10px" }}>
-              <TextField fullWidth label="MM" variant="standard" />
-              <TextField fullWidth label="YY" variant="standard" />
-              <TextField fullWidth label="CVC" variant="standard" />
-            </Box>
-            <Box mb="15px">
-              <FormControlLabel control={<Checkbox defaultChecked />} label="Save my card for future purchases" />
-            </Box>
-            <PrimaryButton>Pay now</PrimaryButton>
-          </form>
+
+          <PaymentForm setIsOpened={setIsFormOpened} />
         </Box>
       </Modal>
     </Box>

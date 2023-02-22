@@ -179,7 +179,7 @@ const PaymentForm = ({ setIsOpened }: IPaymentFormProps) => {
           control={control}
           name="cvv"
           render={({ field: { onChange, onBlur, value } }) => (
-            <Box position="relative">
+            <Box position="relative" width="100%">
               <InputMask
                 mask="999"
                 maskChar=""

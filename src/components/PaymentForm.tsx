@@ -1,4 +1,4 @@
-import { Box, Checkbox, FormControlLabel, TextField, Typography } from "@mui/material";
+import { Box, Checkbox, FormControlLabel, IconButton, TextField, Typography } from "@mui/material";
 import PrimaryButton from "./PrimaryButton";
 import InputMask from "react-input-mask";
 import * as yup from "yup";
@@ -10,19 +10,37 @@ import * as paymentData from "../features/paymentData/paymentDataSlice";
 import * as cart from "../features/cart/cartSlice";
 import React, { useState } from "react";
 import Swal from "sweetalert2";
-import PaymentIcon from "../icons/PaymentIcon";
+import PaymentIcon from "./PaymentIcon";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 interface IPaymentFormProps {
   setIsOpened?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const paymentSchema = yup.object().shape({
-  name: yup.string().trim().max(30, "enter less than 30 symbols").required("required"),
-  cardNumber: yup.string().required("required").transform((value: string) => value.split(" ").join("")).length(16, "enter 16 digits").test("test-number", "Credit Card is invalid", value => {
-    return valid.number(value).isValid;
-  }),
-  expirationDate: yup.string().required("required").transform((value: string) => value.split("/").join("")).length(4, "format must be MM/YY"),
-  cvv: yup.string().required("required").length(3, "enter 3 digits"),
+  name: yup
+    .string()
+    .trim()
+    .max(30, "enter less than 30 symbols")
+    .required("required"),
+  cardNumber: yup
+    .string()
+    .required("required")
+    .transform((value: string) => value.split(" ").join(""))
+    .length(16, "enter 16 digits")
+    .test("test-card-number", "Credit Card is invalid", value => {
+      return valid.number(value).isValid;
+    }),
+  expirationDate: yup
+    .string()
+    .required("required")
+    .transform((value: string) => value.split("/").join(""))
+    .length(4, "format must be MM/YY")
+    .test("test-expiration-date", "date is not valid", value => valid.expirationDate(value).isValid),
+  cvv: yup
+    .string()
+    .required("required")
+    .length(3, "enter 3 digits"),
 })
 type FormData = yup.InferType<typeof paymentSchema>;
 
@@ -33,6 +51,7 @@ const PaymentForm = ({ setIsOpened }: IPaymentFormProps) => {
 
   const initialCardType = valid.number(cardNumber).card?.type;
 
+  const [isCvvHidden, setisCvvHidden] = useState(true);
   const [isChecked, setIsChecked] = useState(true);
   const [cardType, setCardType] = useState<string | null>(initialCardType ? initialCardType : null);
 
@@ -60,7 +79,6 @@ const PaymentForm = ({ setIsOpened }: IPaymentFormProps) => {
 
   const cardHandleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const type = valid.number(e.target.value).card?.type;
-    // @ts-ignore
     setCardType(type ? type : null);
   }
 
@@ -161,25 +179,32 @@ const PaymentForm = ({ setIsOpened }: IPaymentFormProps) => {
           control={control}
           name="cvv"
           render={({ field: { onChange, onBlur, value } }) => (
-            <InputMask
-              mask="999"
-              maskChar=""
-              value={value}
-              onChange={onChange}
-              onBlur={onBlur}
-            >
-              {/* @ts-ignore */}
-              {(inputProps) =>
-                <TextField
-                  {...inputProps}
-                  fullWidth label="CVC"
-                  variant="standard"
-                  inputProps={{ style: { fontSize: "16px" } }}
-                  error={!!errors.cvv}
-                  helperText={errors.cvv?.message}
-                />
-              }
-            </InputMask>
+            <Box position="relative">
+              <InputMask
+                mask="999"
+                maskChar=""
+                value={value}
+                onChange={onChange}
+                onBlur={onBlur}
+              >
+                {/* @ts-ignore */}
+                {(inputProps) =>
+                  <TextField
+                    {...inputProps}
+                    fullWidth label="CVC"
+                    type={isCvvHidden ? "password" : "text"}
+                    variant="standard"
+                    inputProps={{ style: { fontSize: "16px" } }}
+                    error={!!errors.cvv}
+                    helperText={errors.cvv?.message}
+                  />
+                }
+              </InputMask>
+
+              <IconButton onClick={() => setisCvvHidden(!isCvvHidden)} sx={{ position: "absolute", top: "13px", right: "-2px" }}>
+                {isCvvHidden ? <VisibilityOff /> : <Visibility />}
+              </IconButton>
+            </Box>
           )}
         />
       </Box>

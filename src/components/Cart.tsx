@@ -87,6 +87,11 @@ const Cart = () => {
           <Box
             position="relative"
             width="270px"
+            component={motion.div}
+            animate={{ x: 0 }}
+            initial={{ x: -100 }}
+            exit={{ x: -100 }}
+            transition={{ delay: .2 }}
             sx={{
               "&::before": {
                 content: `""`,
@@ -104,7 +109,9 @@ const Cart = () => {
             <img src={headphonesImg} style={{ maxWidth: "85%", transform: "translateX(10px)" }} />
           </Box>
 
-          <PaymentForm setIsOpened={setIsFormOpened} />
+          <Box component={motion.div} animate={{ x: 0 }} initial={{ x: 100 }} exit={{ x: 100 }} transition={{ delay: .2 }}>
+            <PaymentForm setIsOpened={setIsFormOpened} />
+          </Box>
         </Box>
       </Modal>
     </Box>

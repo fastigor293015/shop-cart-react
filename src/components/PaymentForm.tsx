@@ -1,4 +1,4 @@
-import { Box, Checkbox, FormControlLabel, IconButton, TextField, Typography } from "@mui/material";
+import { Box, Checkbox, FormControlLabel, IconButton, TextField, Typography, useMediaQuery } from "@mui/material";
 import PrimaryButton from "./PrimaryButton";
 import InputMask from "react-input-mask";
 import * as yup from "yup";
@@ -12,6 +12,7 @@ import React, { useState } from "react";
 import Swal from "sweetalert2";
 import PaymentIcon from "./PaymentIcon";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import FormInput from "./FormInput";
 
 interface IPaymentFormProps {
   setIsOpened?: React.Dispatch<React.SetStateAction<boolean>>;
@@ -55,6 +56,8 @@ const PaymentForm = ({ setIsOpened }: IPaymentFormProps) => {
   const [isChecked, setIsChecked] = useState(true);
   const [cardType, setCardType] = useState<string | null>(initialCardType ? initialCardType : null);
 
+  const isNonMobileScreen = useMediaQuery("(min-width:350px)");
+
   const { control, handleSubmit, formState: { errors } } = useForm<FormData>({
     resolver: yupResolver(paymentSchema),
     defaultValues: {
@@ -83,8 +86,8 @@ const PaymentForm = ({ setIsOpened }: IPaymentFormProps) => {
   }
 
   return (
-    <form style={{ padding: "40px 30px" }} onSubmit={handleSubmit(onSubmit)}>
-      <Typography variant="h3" fontWeight="500" mb="15px">
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <Typography variant="h3" fontWeight="500" mb={isNonMobileScreen ? "15px" : "10px"} fontSize={isNonMobileScreen ? undefined : "20px"}>
         Your payment details
       </Typography>
 
@@ -92,10 +95,9 @@ const PaymentForm = ({ setIsOpened }: IPaymentFormProps) => {
         control={control}
         name="name"
         render={({ field: { onChange, onBlur, value } }) => (
-          <TextField
-            fullWidth label="NAME"
-            variant="standard"
-            inputProps={{ style: { fontSize: "16px" } }}
+          <FormInput
+            autoFocus
+            label="NAME"
             sx={{ mb: "15px" }}
             value={value}
             onChange={onChange}
@@ -114,11 +116,9 @@ const PaymentForm = ({ setIsOpened }: IPaymentFormProps) => {
             <InputMask mask="9999 9999 9999 9999" maskChar="" value={value} onChange={(e) => {cardHandleChange(e); onChange(e)}} onBlur={onBlur}>
               {/* @ts-ignore */}
               {(inputProps) =>
-                <TextField
+                <FormInput
                   {...inputProps}
-                  fullWidth label="CARD NUMBER"
-                  variant="standard"
-                  inputProps={{ style: { fontSize: "16px" } }}
+                  label="CARD NUMBER"
                   error={!!errors.cardNumber}
                   helperText={errors.cardNumber?.message}
                 />
@@ -148,7 +148,7 @@ const PaymentForm = ({ setIsOpened }: IPaymentFormProps) => {
         )}
       />
 
-      <Box display="flex" gap="35px" sx={{ mb: "20px" }}>
+      <Box display="flex" gap={isNonMobileScreen ? "35px" : "20px"} sx={{ mb: "20px" }}>
         <Controller
           control={control}
           name="expirationDate"
@@ -162,11 +162,9 @@ const PaymentForm = ({ setIsOpened }: IPaymentFormProps) => {
             >
               {/* @ts-ignore */}
               {(inputProps) =>
-                <TextField
+                <FormInput
                   {...inputProps}
-                  fullWidth label="MM/YY"
-                  variant="standard"
-                  inputProps={{ style: { fontSize: "16px" } }}
+                  label="MM/YY"
                   error={!!errors.expirationDate}
                   helperText={errors.expirationDate?.message}
                 />
@@ -189,12 +187,10 @@ const PaymentForm = ({ setIsOpened }: IPaymentFormProps) => {
               >
                 {/* @ts-ignore */}
                 {(inputProps) =>
-                  <TextField
+                  <FormInput
                     {...inputProps}
-                    fullWidth label="CVC"
+                    label="CVC"
                     type={isCvvHidden ? "password" : "text"}
-                    variant="standard"
-                    inputProps={{ style: { fontSize: "16px" } }}
                     error={!!errors.cvv}
                     helperText={errors.cvv?.message}
                   />
@@ -209,7 +205,7 @@ const PaymentForm = ({ setIsOpened }: IPaymentFormProps) => {
         />
       </Box>
       <Box mb="15px">
-        <FormControlLabel control={<Checkbox checked={isChecked} onChange={(e) => setIsChecked(e.target.checked)} />} label="Save my card for future purchases" />
+        <FormControlLabel control={<Checkbox size={isNonMobileScreen ? undefined : "small"} checked={isChecked} onChange={(e) => setIsChecked(e.target.checked)} />} label={<Typography fontSize={isNonMobileScreen ? undefined : "12px"}>Save my card for future purchases</Typography>} />
       </Box>
       <PrimaryButton type="submit">Pay now</PrimaryButton>
     </form>

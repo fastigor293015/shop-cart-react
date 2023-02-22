@@ -4,7 +4,7 @@ import { Fragment, useState } from "react";
 import { useAppSelector } from "../app/hooks";
 import CartItem from "./CartItem";
 import PrimaryButton from "./PrimaryButton";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import SlidingPanel from "./SlidingPanel";
 import Modal from "./Modal";
 
@@ -16,7 +16,8 @@ const Cart = () => {
   const [isFormOpened, setIsFormOpened] = useState(false);
   const { palette } = useTheme();
   const { list, count, summary } = useAppSelector(state => state.cart);
-  const isNonMobileScreen = useMediaQuery("(min-width:500px)");
+  const isNonMobileScreen = useMediaQuery("(min-width:700px)");
+  const isNonSmallHeightScreen = useMediaQuery("(min-height:400px)");
 
   return (
     <Box>
@@ -28,7 +29,7 @@ const Cart = () => {
 
       <SlidingPanel isOpened={isCartOpened} setIsOpened={setIsCartOpened}>
         <Box display="flex" flexDirection="column" height="100%">
-          <Box display="flex" justifyContent="space-between" alignItems="center" p="24px">
+          <Box display="flex" justifyContent="space-between" alignItems="center" p={isNonSmallHeightScreen ? "24px" : "15px 20px"}>
             <Typography variant="h4" color={palette.text.primary} fontWeight="500">
               Cart
             </Typography>
@@ -52,7 +53,7 @@ const Cart = () => {
 
           <Divider />
 
-          <Box mb="5px" p="24px">
+          <Box mb="5px" p={isNonSmallHeightScreen ? "24px" : "16px"}>
             <Box display="flex" justifyContent="space-between">
               <Typography fontWeight="700">
                 Subtotal
@@ -80,19 +81,29 @@ const Cart = () => {
       </SlidingPanel>
 
       <Modal isOpened={isFormOpened} setIsOpened={setIsFormOpened}>
-        <Box position="relative" display="flex">
-          <IconButton sx={{ position: "absolute", top: "15px", right: "15px", }} onClick={() => setIsFormOpened(false)}>
+        <Box position="relative" display="flex" justifyContent="center" width={isNonMobileScreen ? "650px" : "calc(100vw - 10px * 2)"} height={isNonSmallHeightScreen ? undefined : "calc(100vh - 10px * 2)"}>
+          <IconButton
+            sx={{
+              position: "absolute",
+              inset: isNonMobileScreen ? "15px 15px auto auto" : "10px 10px auto auto",
+            }}
+            onClick={() => setIsFormOpened(false)}
+          >
             <Close />
           </IconButton>
           <Box
-            position="relative"
+            position={isNonMobileScreen ? "relative" : "absolute"}
+            zIndex={-1}
             width="270px"
+            overflow="hidden"
             component={motion.div}
             animate={{ x: 0 }}
             initial={{ x: -100 }}
             exit={{ x: -100 }}
             transition={{ delay: .2 }}
             sx={{
+              inset: isNonMobileScreen ? undefined : "0 auto 0 0",
+              opacity: isNonMobileScreen ? 1 : .3,
               "&::before": {
                 content: `""`,
                 position: "absolute",
@@ -103,13 +114,13 @@ const Cart = () => {
                 borderRadius: "50%",
                 bgcolor: "#fbcf34",
                 transform: "translateY(-25%)",
-              }
+              },
             }}
           >
             <img src={headphonesImg} style={{ maxWidth: "85%", transform: "translateX(10px)" }} />
           </Box>
 
-          <Box component={motion.div} animate={{ x: 0 }} initial={{ x: 100 }} exit={{ x: 100 }} transition={{ delay: .2 }}>
+          <Box padding={isNonMobileScreen ? "40px 30px" : "30px 20px"} overflow="auto" component={motion.div} animate={{ x: 0 }} initial={{ x: 100 }} exit={{ x: 100 }} transition={{ delay: .2 }}>
             <PaymentForm setIsOpened={setIsFormOpened} />
           </Box>
         </Box>

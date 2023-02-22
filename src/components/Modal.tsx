@@ -36,8 +36,6 @@ const Modal = ({ isOpened, setIsOpened, children }: IModalProps) => {
           zIndex="20"
           top="50%"
           left="50%"
-          width="650px"
-          // height="600px"
           borderRadius="15px"
           bgcolor={palette.background.default}
           boxShadow="0px 0px 20px 7px rgba(34, 60, 80, 0.2)"

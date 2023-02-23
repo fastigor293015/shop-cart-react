@@ -120,7 +120,15 @@ const Cart = () => {
             <img src={headphonesImg} style={{ maxWidth: "85%", transform: "translateX(10px)" }} />
           </Box>
 
-          <Box padding={isNonMobileScreen ? "40px 30px" : "30px 20px"} overflow="auto" component={motion.div} animate={{ x: 0 }} initial={{ x: 100 }} exit={{ x: 100 }} transition={{ delay: .2 }}>
+          <Box
+            padding={isNonMobileScreen ? "40px 30px" : "30px 20px"}
+            overflow="auto"
+            component={motion.div}
+            animate={{ x: 0 }}
+            initial={{ x: 100 }}
+            exit={{ x: 100 }}
+            transition={{ delay: .2 }}
+          >
             <PaymentForm setIsOpened={setIsFormOpened} />
           </Box>
         </Box>

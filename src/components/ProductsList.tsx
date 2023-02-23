@@ -4,6 +4,7 @@ import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { fetchProducts } from "../features/products/productsSlice";
 import ProductSkeleton from "../skeleton/ProductSkeleton";
 import Product from "./Product";
+import { motion } from "framer-motion";
 
 const ProductsList = () => {
   const dispatch = useAppDispatch();
@@ -53,7 +54,11 @@ const ProductsList = () => {
               <ProductSkeleton />
               <ProductSkeleton />
             </>
-            : list.map(item => (<Product key={item.id} item={item} />))
+            : list.map(item => (
+              <Box key={item.id} component={motion.div} initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: .2 }}>
+                <Product item={item} />
+              </Box>
+            ))
         }
       </Box>
     </>

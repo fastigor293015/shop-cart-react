@@ -5,6 +5,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { add } from "../features/cart/cartSlice";
 import PrimaryButton from "./PrimaryButton";
+import { motion } from "framer-motion";
 
 const thumbnailsList = [
   1, 2, 3, 4
@@ -56,7 +57,12 @@ const ProductDetails = () => {
       </PrimaryButton>
       <Box display="grid" gridTemplateColumns={isNonTabletScreen ? "repeat(2,1fr)" : "repeat(1,1fr)"} columnGap="30px" rowGap="20px">
 
-        <Box>
+        <Box
+          component={motion.div}
+          initial={isNonTabletScreen ? { x: -100, opacity: 0 } : { opacity: 0 }}
+          animate={isNonTabletScreen ? { x: 0, opacity: 1 }: { opacity: 1 }}
+          transition={{ delay: .3 }}
+        >
           <Box
             position="relative"
             display="flex"
@@ -98,7 +104,12 @@ const ProductDetails = () => {
           </Box>
         </Box>
 
-        <Box gridRow="2 span">
+        <Box
+          component={motion.div}
+          initial={isNonTabletScreen ? { x: 100 , opacity: 0} : { opacity: 0 }}
+          animate={isNonTabletScreen ? { x: 0, opacity: 1 }: { opacity: 1 }}
+          transition={{ delay: .3 }}
+        >
           <Typography variant="h3" mb="10px" fontWeight="700">
             {product?.title}
           </Typography>

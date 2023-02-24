@@ -3,6 +3,7 @@ import { useMemo, useRef, useState } from 'react';
 import { themeSettings } from './theme';
 import { useAppSelector } from './app/hooks';
 import { Routes, Route } from 'react-router-dom';
+import MainPage from './scenes/mainPage';
 import ProductsPage from './scenes/productsPage';
 import ProductDetailsPage from './scenes/productDetailsPage';
 import Header from './components/Header';
@@ -27,7 +28,7 @@ function App() {
       <div ref={containerRef} className="app">
         <Header scrollValue={scrollValue} />
         <Routes>
-          <Route path="/" element={<ProductsPage />} />
+          <Route path="/" element={<MainPage />} />
           <Route path="/products" element={<ProductsPage />} />
           <Route path="/product/:productId" element={<ProductDetailsPage />} />
         </Routes>

@@ -5,6 +5,7 @@ import { useAppDispatch } from "../app/hooks";
 import { setMode } from "../features/theme/themeSlice";
 import Cart from "./Cart";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
 interface IHeaderProps {
   scrollValue: number;
@@ -14,6 +15,7 @@ const Header = ({ scrollValue }: IHeaderProps) => {
   const [searchValue, setSearchValue] = useState('');
   const { palette } = useTheme();
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const isNonMobileScreen = useMediaQuery("(min-width:600px)");
 
   return (
@@ -44,7 +46,7 @@ const Header = ({ scrollValue }: IHeaderProps) => {
         }
       }}
     >
-      <Typography variant="h2">
+      <Typography variant="h2" onClick={() => navigate("/")} sx={{ cursor: "pointer" }}>
         Shop
       </Typography>
 

@@ -1,11 +1,13 @@
-import { ArrowBack, Add } from "@mui/icons-material";
-import { Box, Accordion, AccordionSummary, AccordionDetails, Rating, Typography, useMediaQuery, useTheme, Divider } from "@mui/material";
+import { ArrowBack, Add, Close } from "@mui/icons-material";
+import { Box, Accordion, AccordionSummary, AccordionDetails, Rating, Typography, useMediaQuery, useTheme, Divider, IconButton } from "@mui/material";
 import { useState, Fragment } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { add } from "../features/cart/cartSlice";
 import PrimaryButton from "./PrimaryButton";
 import { motion } from "framer-motion";
+import Modal from "./Modal";
+import Slider from "./Slider";
 
 const thumbnailsList = [
   1, 2, 3, 4
@@ -25,6 +27,7 @@ const defaultSummaryValues = [
 const ProductDetails = () => {
   const [thumbnail, setThumbnail] = useState(0);
   const [color, setColor] = useState(defaultColors[0])
+  const [isSliderOpened, setIsSliderOpened] = useState(false);
   const [expandedAccordion, setExpandedAccordion] = useState<number | null>(null);
   const { palette } = useTheme();
 
@@ -39,6 +42,7 @@ const ProductDetails = () => {
 
   const isNonTabletScreen = useMediaQuery("(min-width:900px)");
   const isNonMobileScreen = useMediaQuery("(min-width:600px)");
+  const isNonSmallHeightScreen = useMediaQuery("(min-height:550px)");
 
   return (
     <Box>
@@ -73,6 +77,10 @@ const ProductDetails = () => {
             p="20px"
             borderRadius="5px"
             bgcolor="rgb(241 245 249)"
+            sx={{
+              cursor: "pointer",
+            }}
+            onClick={() => setIsSliderOpened(true)}
           >
             <img src={product?.image} alt="Фото товара" />
           </Box>
@@ -235,6 +243,24 @@ const ProductDetails = () => {
           ))}
         </Box>
       </Box>
+
+      <Modal isOpened={isSliderOpened} setIsOpened={setIsSliderOpened}>
+        <IconButton
+          sx={{
+            position: "absolute",
+            zIndex: 2,
+            inset: isNonMobileScreen ? "20px 20px auto auto" : "10px 10px auto auto",
+            color: "#000",
+            bgcolor: "#FFF",
+          }}
+          onClick={() => setIsSliderOpened(false)}
+        >
+          <Close />
+        </IconButton>
+        <Box width={isNonTabletScreen ? "800px" : "calc(100vw - 10px * 2)"}>
+          <Slider height={isNonSmallHeightScreen && isNonMobileScreen ? "500px" : !isNonSmallHeightScreen ? "calc(100vh - 50px - 10px * 2)" : "300px"} imagesList={product?.image ? [product?.image, product?.image, product?.image, product?.image] : []} />
+        </Box>
+      </Modal>
     </Box>
   )
 }

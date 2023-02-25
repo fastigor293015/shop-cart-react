@@ -29,10 +29,6 @@ const slideVariants = {
   }
 }
 
-// const paginationVariants = {
-//   enter: ()
-// }
-
 const swipeConfidenceThreshold = 10000;
 const swipePower = (offset: number, velocity: number) => {
   return Math.abs(offset) * velocity;
@@ -44,8 +40,6 @@ const Slider = ({ height, imagesList }: ISliderProps) => {
 
   const imageIndex = wrap(0, imagesList.length, slide);
 
-  console.log(imageIndex)
-
   const paginate = (newDirection: number) => {
     setSlide([slide + newDirection, newDirection]);
   }
@@ -55,10 +49,6 @@ const Slider = ({ height, imagesList }: ISliderProps) => {
     <Box
       position="relative"
       mb="50px"
-      // sx={{
-      //   overflowX: "hidden",
-      //   overflowY: "visible",
-      // }}
     >
       {/* Wrapper */}
       <Box
@@ -154,13 +144,11 @@ const Slider = ({ height, imagesList }: ISliderProps) => {
           <IconButton
             onClick={() => paginate(-1)}
             sx={{
+              color: "#000",
               bgcolor: "#FFF",
-              "&:hover": {
-                bgcolor: "rgba(255, 255, 255, .5)"
-              }
             }}
           >
-            <ArrowBack sx={{ fontSize: "25px", color: "#000" }} />
+            <ArrowBack sx={{ fontSize: "25px",  }} />
           </IconButton>
         </motion.div>
 
@@ -172,13 +160,11 @@ const Slider = ({ height, imagesList }: ISliderProps) => {
           <IconButton
             onClick={() => paginate(1)}
             sx={{
+              color: "#000",
               bgcolor: "#FFF",
-              "&:hover": {
-                bgcolor: "rgba(255, 255, 255, .5)"
-              }
             }}
           >
-            <ArrowForward sx={{ fontSize: "25px", color: "#000" }} />
+            <ArrowForward sx={{ fontSize: "25px" }} />
           </IconButton>
         </motion.div>
       </Box>
@@ -212,12 +198,12 @@ const Slider = ({ height, imagesList }: ISliderProps) => {
               initial={{
                 scale: 0,
                 x: 10 * (i - imageIndex),
-                backgroundColor: "transparent",
+                backgroundColor: palette.background.default,
               }}
               animate={{
                 scale: (Math.abs(imageIndex - i) === 1) ? .70 : (Math.abs(imageIndex - i) === 2) ? .4 : 1,
                 x: 20 * (i - imageIndex),
-                backgroundColor: i === imageIndex ? palette.text.primary : "transparent",
+                backgroundColor: i === imageIndex ? palette.text.primary : palette.background.default,
               }}
               exit={{
                 scale: 0,

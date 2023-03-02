@@ -1,7 +1,7 @@
 import { ArrowBack, Add, Close } from "@mui/icons-material";
 import { Box, Accordion, AccordionSummary, AccordionDetails, Rating, Typography, useMediaQuery, useTheme, Divider, IconButton } from "@mui/material";
 import { useState, Fragment } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { add } from "../features/cart/cartSlice";
 import PrimaryButton from "./PrimaryButton";
@@ -24,14 +24,17 @@ const defaultSummaryValues = [
   "Returns",
 ];
 
-const ProductDetails = () => {
+interface IProductDetails {
+  productId: string;
+}
+
+const ProductDetails = ({ productId }: IProductDetails) => {
   const [thumbnail, setThumbnail] = useState(0);
   const [color, setColor] = useState(defaultColors[0])
   const [isSliderOpened, setIsSliderOpened] = useState(false);
   const [expandedAccordion, setExpandedAccordion] = useState<number | null>(null);
   const { palette } = useTheme();
 
-  const { productId } = useParams();
   const navigate = useNavigate();
 
   const productsList = useAppSelector(state => state.products.list);
